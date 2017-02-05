@@ -3,7 +3,7 @@ let attempt = document.getElementById('attempt').value;
 
 function guess() {
     let input = document.getElementById('user-guess');
-    if (answer == '' || attempt == '') {
+    if (answer == '' && attempt == '') {
       setHiddenFields();
     }
 
@@ -69,7 +69,7 @@ function getResults(input) {
 
 function showAnswer(result) {
   let code = document.getElementById('code');
-  code.innerHTML = answer;
+  code.innerHTML = document.getElementById('answer').value;
   if (result) {
     code.className += " success";
   } else {
