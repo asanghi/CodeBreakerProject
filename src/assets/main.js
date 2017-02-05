@@ -1,24 +1,22 @@
-let answer = document.getElementById('answer').value;
-let attempt = document.getElementById('attempt').value;
+let answer = document.getElementById('answer');
+let attempt = document.getElementById('attempt');
 
 function guess() {
     let input = document.getElementById('user-guess');
-    if (answer == '' && attempt == '') {
+    if (answer.value == '' || attempt.value == '') {
       setHiddenFields();
     }
 
-    if (validateInput(input.value)) {
-      attempt++;
-      document.getElementById('attempt').value = attempt;
-    } else {
+    if (!validateInput(input.value)) {
       return false;
     }
+    attempt.value++;
 
     if (getResults(input.value)) {
       setMessage("You Win! :)");
       showAnswer(true);
       showReplay();
-    } else if (attempt >= 10) {
+    } else if (attempt.value >= 10) {
       setMessage("You Lose! :(");
       showAnswer(false);
       showReplay();
@@ -28,12 +26,11 @@ function guess() {
 }
 
 function setHiddenFields() {
-  answer = (Math.floor(Math.random() * 10000)).toString();
-  while (answer.length < 4) {
-    answer = "0" + answer;
+  answer.value = (Math.floor(Math.random() * 10000)).toString();
+  while (answer.value.length < 4) {
+    answer = "0" + answer.value;
   }
-  document.getElementById('answer').value = answer;
-  attempt = 0;
+  attempt.value = 0;
 }
 
 function setMessage(message) {
@@ -52,7 +49,7 @@ function getResults(input) {
   results = document.getElementById('results');
   let original = '<div class="row"><span class="col-md-6">' + input + '</span><div class="col-md-6">';
   let correctGuesses = 0;
-  let positions = answer.toString().split("");
+  let positions = answer.value.toString().split("");
   for(i=0; i < input.length; i++) {
     if (input[i] == positions[i]) {
       correctGuesses++;
