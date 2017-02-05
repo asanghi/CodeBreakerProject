@@ -3,12 +3,13 @@ let attempt = document.getElementById('attempt').value;
 
 function guess() {
     let input = document.getElementById('user-guess');
-    if (answer == '') {
+    if (answer == '' || attempt == '') {
       setHiddenFields();
     }
 
     if (validateInput(input.value)) {
-      attempt = attempt + 1;
+      attempt++;
+      document.getElementById('attempt').value = attempt;
     } else {
       return false;
     }
@@ -27,7 +28,11 @@ function guess() {
 }
 
 function setHiddenFields() {
-  answer = Math.floor(Math.random() * 10000);
+  answer = (Math.floor(Math.random() * 10000)).toString();
+  while (answer.length < 4) {
+    answer = "0" + answer;
+  }
+  document.getElementById('answer').value = answer;
   attempt = 0;
 }
 
@@ -48,9 +53,9 @@ function getResults(input) {
   let original = '<div class="row"><span class="col-md-6">' + input + '</span><div class="col-md-6">';
   let correctGuesses = 0;
   let positions = answer.toString().split("");
-  for(i=0; i<4; i++) {
+  for(i=0; i < input.length; i++) {
     if (input[i] == positions[i]) {
-      correctGuesses += 1;
+      correctGuesses++;
       original += '<span class="glyphicon glyphicon-ok"></span>';
     } else if (positions.includes(input[i])) {
       original += '<span class="glyphicon glyphicon-transfer"></span>';
@@ -59,11 +64,11 @@ function getResults(input) {
     }
   }
   results.innerHTML = results.innerHTML + original + '</div></div>';
-  return(correctGuesses == 4);
+  return(correctGuesses == input.length);
 }
 
 function showAnswer(result) {
-  let code = document.getElementById('code')
+  let code = document.getElementById('code');
   code.innerHTML = answer;
   if (result) {
     code.className += " success";
@@ -73,6 +78,6 @@ function showAnswer(result) {
 }
 
 function showReplay() {
-  document.getElementById('guessing-div').style.display = "none";
-  document.getElementById('replay-div').style.display = "block";
+  document.getElementById('guessing-div').style = "display:none";
+  document.getElementById('replay-div').style = "display:block";
 }
